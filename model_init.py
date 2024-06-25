@@ -4,7 +4,8 @@ import numpy as np
 from PIL import Image
 from torchvision import models, transforms
 
-device = torch.device("cpu")
+device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else device
 
 def load_preprocess (name = "inceptionv3"):
     if(name == "resnet50v2" or name == "resnet101v2" or name == "resnet152v2" or name == "inceptionv3" or name == "mobilenetv2" or name == "vgg16" or name == "vgg19" or name == "densenet121" or name == "densenet169" or name == "densenet201"):
