@@ -1,7 +1,8 @@
 import torch
 import numpy as np
 
-device = torch.device("cpu")
+device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else device
 
 class SmoothGrad():
     def __init__ (self, model, load, preprocess, saliency):
