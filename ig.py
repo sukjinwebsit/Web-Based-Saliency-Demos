@@ -3,8 +3,7 @@ import torch
 import numpy as np
 from torchvision import transforms
 
-device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
-device = torch.device("cuda") if torch.cuda.is_available() else device
+device = torch.device("cpu")
 
 class IG():
     def __init__(self, model, load, preprocess):
