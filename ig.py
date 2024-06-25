@@ -3,7 +3,8 @@ import torch
 import numpy as np
 from torchvision import transforms
 
-device = torch.device("cpu")
+device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else device
 
 class IG():
     def __init__(self, model, load, preprocess):
@@ -61,7 +62,10 @@ class IG():
                     gradientsf = reshape_fortran(gradientsf, (x_step_batched.shape[0], x_step_batched.shape[1], x_step_batched.shape[2], x_step_batched.shape[3], x_step_batched.shape[4]))
                     gradientsn[i-x_step_batched.shape[0]+1:i+1] = gradientsf
                     del gradientsf, outputs, x_step_batched, x_step_batch, processed, output
-                    torch.mps.empty_cache()
+                    if torch.backends.mps.is_available():
+                        torch.mps.empty_cache()
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
                     gc.collect()
                     x_step_batched = []
             for i in range(steps):
